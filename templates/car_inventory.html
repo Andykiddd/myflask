@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Inventory</title>
+</head>
+<body>
+    <h1>Car Inventory Table </h1>
+    <div>
+        <table border="1px">
+            <tr style="background-color:#ee0000">
+                <th>Make</th>
+                <th>Model</th>
+                <th>Color</th>
+                <th>Mileage</th>
+                <th>Price</th>
+                <th>Cost</th>
+            </tr>
+            {% for row in data %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>
+                </tr>
+            {% endfor%}
+        </table>
+    </div>
+</body>
+</html>
