@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check User List</title>
+</head>
+<body>
+  <h1>Check User List</h1>
+  <table border="1">
+    <tr>
+      <th>User ID</th>
+      <th>User Name</th>
+      <th>Detail</th>
+    </tr>
+    {% for user in datas %}
+      <tr>
+        <td>{{user["id"]}}</td>
+        <td>{{user["name"]}}</td>
+        <td><a href="/show_user/{{user['id']}}">Detail</a></td>
+      </tr>
+    {% endfor %}
+  </table>
+
+</body>
+</html>

@@ -1,6 +1,8 @@
 import json
 
 from flask import Flask, render_template, request
+from pyecharts.charts import Bar, Pie
+from pyecharts import options as opts
 
 import db
 
@@ -36,7 +38,7 @@ def get_user(username):
 @app.route("/use_template")
 def use_template():
     datas = [(1, "name1"), (2, "name2"), (3, "name3")]
-    title = "学生信息"
+    title = "Student Infomation"
     return render_template("use_template.html", datas=datas, title=title)
 
 
@@ -90,6 +92,67 @@ def do_add_user():
     db.insert_or_update_data(sql)
     return 'success'
 
+@app.route("/show_users")
+def show_users():
+    sql = "select id, name from user"
+    datas = db.query_data(sql)
 
+    print(datas)
+    return render_template("show_users.html", datas=datas)
+# 查看单个用户的信息
+@app.route("/show_user/<user_id>")
+def show_user(user_id):
+    sql = "select * from user where id=" +user_id
+    datas = db.query_data(sql)
+    user = datas[0]
+    return render_template("show_user.html", user=user)
+
+@app.route("/show_pyecharts")
+def show_pyecharts():
+    bar = (
+        Bar()
+            .add_xaxis(["shirt","goat shirt"])
+            .add_yaxis('Supplier',[5,20])
+    )
+    return render_template("show_pyecharts.html",bar_options = bar.dump_options())
+
+
+def get_pie() ->Pie:
+    sql = """
+        select sex,count(1) as cnt from user group by sex
+    """
+    datas = db.query_data(sql)
+    c = (
+        Pie()
+        .add("", [(data['sex'],data['cnt']) for data in datas])
+        .set_global_opts(title_opts=opts.TitleOpts(title="Pie-example"))
+        .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
+    )
+    return c
+
+def get_bar() ->Bar:
+    sql = """
+            select sex,count(1) as cnt from user group by sex
+        """
+    datas = db.query_data(sql)
+    c = (
+        Bar()
+            .add_xaxis([data['sex'] for data in datas])
+            .add_yaxis("amount", [data['cnt'] for data in datas])
+            .set_global_opts(title_opts=opts.TitleOpts(title="Bar-example", subtitle="subtitle"))
+
+
+    )
+    return c
+
+
+@app.route("/show_myecharts")
+def show_myecharts():
+    pie = get_pie()
+    bar = get_bar()
+    return render_template("show_myecharts.html",
+                           pie_options = pie.dump_options(),
+                           bar_options=bar.dump_options()
+                           )
 if __name__ == '__main__':
     app.run()

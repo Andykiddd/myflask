@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>myecharts</title>
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <!--    import echart.js-->
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+</head>
+<body>
+    <h1>Pie Chart</h1>
+    <!--Set up the Echarts' dom-->
+    <div id="pie" style="width:1000px; height:600px;"></div>
+    <h1>Bar Chart</h1>
+    <!--Set up the Echarts' dom-->
+    <div id="bar" style="width:1000px; height:600px;"></div>
+
+    <script type="text/javascript">
+        <!--Base on the dom, Initial the echarts-->
+        var pieChart = echarts.init(document.getElementById('pie'));
+        var barChart = echarts.init(document.getElementById('bar'));
+        // Set up the chart's configration and data from the test.py
+        var pie_option = {{pie_options | safe}};
+        var bar_option = {{bar_options | safe}};
+        // Use the configuration to display the charts
+        pieChart.setOption(pie_option);
+        barChart.setOption(bar_option);
+    </script>
+</body>
+</html>
